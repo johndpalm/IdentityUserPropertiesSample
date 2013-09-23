@@ -1,0 +1,2 @@
+IdentityUserPropertiesSample (https://github.com/johndpalm/IdentityUserPropertiesSample)
+Copyright (c) 2013 John Palmer, All rights reserved.
