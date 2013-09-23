@@ -8,26 +8,26 @@
     <fieldset class="form-horizontal">
         <legend>User Properties</legend>
         <div class="form-group">
-            @Html.LabelFor(m => m.FirstName, new { @class = "col-lg-3 control-label" })
-            <div class="col-lg-4">
+            @Html.LabelFor(m => m.FirstName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-6">
                 @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
-            </div>
+                    </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => m.LastName, new { @class = "col-lg-3 control-label" })
-            <div class="col-lg-4">
+            @Html.LabelFor(m => m.LastName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-6">
                 @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(Model => Model.Email, new { @class = "col-lg-3 control-label" })
-            <div class="col-lg-4">
+            @Html.LabelFor(Model => Model.Email, new { @class = "col-md-3 control-label" })
+            <div class="col-md-6">
                 @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(Model => Model.Phone, new { @class = "col-lg-3 control-label" })
-            <div class="col-lg-4">
+            @Html.LabelFor(Model => Model.Phone, new { @class = "col-md-3 control-label" })
+            <div class="col-md-6">
                 @Html.TextBoxFor(Model => Model.Phone, new { @class = "form-control" })
             </div>
         </div>
