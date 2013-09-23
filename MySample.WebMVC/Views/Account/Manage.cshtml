@@ -1,0 +1,36 @@
+@using MySample.WebMVC.Models;
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Manage Account";
+}
+
+<hgroup>
+    <h1>@ViewBag.Title.</h1>
+</hgroup>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div class="row-fluid">
+    <div class="span6">
+        @if (ViewBag.HasLocalPassword)
+        {
+            @Html.Partial("_ChangePasswordPartial")
+        }
+        else
+        {
+            @Html.Partial("_SetPasswordPartial")
+        }
+
+        <section id="externalLogins">
+            @Html.Action("RemoveAccountList")
+
+            @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+    </div>
+    <div class="span6">
+        <p>&nbsp;</p>
+        @Html.Action("UserPropertiesList")
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
