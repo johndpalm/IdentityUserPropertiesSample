@@ -14,38 +14,38 @@
 
     <fieldset class="form-horizontal">
         <legend>Create a new account.</legend>
-        <div class="control-group">
-            @Html.LabelFor(m => m.UserName, new { @class = "control-label" })
-            <div class="controls">
-                @Html.TextBoxFor(m => m.UserName)
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName, new { @class = "col-lg-2 control-label" })
+            <div class="col-lg-4">
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
             </div>
         </div>
-        <div class="control-group">
-            @Html.LabelFor(m => m.Password, new { @class = "control-label" })
-            <div class="controls">
-                @Html.PasswordFor(m => m.Password)
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "col-lg-2 control-label" })
+            <div class="col-lg-4">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
             </div>
         </div>
-        <div class="control-group">
-            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
-            <div class="controls">
-                @Html.PasswordFor(m => m.ConfirmPassword)
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-lg-2 control-label" })
+            <div class="col-lg-4">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
             </div>
         </div>
-        <div class="control-group">
-            @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
-            <div class="controls">
-                @Html.TextBoxFor(m => m.FirstName)
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstName, new { @class = "col-lg-2 control-label" })
+            <div class="col-lg-4">
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
             </div>
         </div>
-        <div class="control-group">
-            @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
-            <div class="controls">
-                @Html.TextBoxFor(m => m.LastName)
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName, new { @class = "col-lg-2 control-label" })
+            <div class="col-lg-4">
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-actions no-color">
-            <input type="submit" value="Register" class="btn" />
+            <input type="submit" value="Register" class="btn btn-primary" />
         </div>
     </fieldset>
 }

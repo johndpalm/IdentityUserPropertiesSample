@@ -33,3 +33,11 @@ input[type="checkbox"].input-validation-error {
   background-color: white;
   border-style:none;
 }
+
+/* fix navbar for Request.IsAuthenticated - true*/
+@media all and (min-width:768px) {
+    .navbar-form .navbar-nav > li > a {
+        padding-top: 7px;
+        padding-bottom: 0px;
+    }
+}

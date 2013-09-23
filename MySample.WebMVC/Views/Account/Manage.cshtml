@@ -9,8 +9,8 @@
 </hgroup>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
-<div class="row-fluid">
-    <div class="span6">
+<div class="row">
+    <div class="col-md-6">
         @if (ViewBag.HasLocalPassword)
         {
             @Html.Partial("_ChangePasswordPartial")
@@ -26,7 +26,7 @@
             @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
         </section>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
         <p>&nbsp;</p>
         @Html.Action("UserPropertiesList")
     </div>

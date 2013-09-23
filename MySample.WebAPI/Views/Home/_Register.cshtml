@@ -8,39 +8,40 @@
         <ul class="text-error" data-bind="foreach: errors">
             <li data-bind="text: $data"></li>
         </ul>
-        <div class="control-group">
-            <label for="UserName" class="control-label">User name</label>
-            <div class="controls">
-                <input type="text" name="UserName" data-bind="value: userName, hasFocus: true" />
+        <div class="form-group">
+            <label for="UserName" class="col-lg-3 control-label">User name</label>
+            <div class="col-lg-4">
+                <input type="text" name="UserName" class="form-control" data-bind="value: userName, hasFocus: true" />
             </div>
         </div>
-        <div class="control-group">
-            <label for="Password" class="control-label">Password</label>
-            <div class="controls">
-                <input type="password" name="Password" data-bind="value: password" />
+        <div class="form-group">
+            <label for="Password" class="col-lg-3 control-label">Password</label>
+            <div class="col-lg-4">
+                <input type="password" name="Password" class="form-control" data-bind="value: password" />
             </div>
         </div>
-        <div class="control-group">
-            <label for="ConfirmPassword" class="control-label">Confirm password</label>
-            <div class="controls">
-                <input type="password" name="ConfirmPassword" data-bind="value: confirmPassword" />
+        <div class="form-group">
+            <label for="ConfirmPassword" class="col-lg-3 control-label">Confirm password</label>
+            <div class="col-lg-4">
+                <input type="password" name="ConfirmPassword" class="form-control" data-bind="value: confirmPassword" />
             </div>
         </div>
-        <div class="control-group">
-            <label for="FirstName" class="control-label">First name</label>
-            <div class="controls">
-                <input type="text" name="FirstName" data-bind="value: firstName" />
+        <div class="form-group">
+            <label for="FirstName" class="col-lg-3 control-label">First name</label>
+            <div class="col-lg-4">
+                <input type="text" name="FirstName" class="form-control" data-bind="value: firstName" />
             </div>
         </div>
-        <div class="control-group">
-            <label for="LastName" class="control-label">Last name</label>
-            <div class="controls">
-                <input type="text" name="LastName" data-bind="value: lastName" />
+        <div class="form-group">
+            <label for="LastName" class="col-lg-3 control-label">Last name</label>
+            <div class="col-lg-4">
+                <input type="text" name="LastName" class="form-control" data-bind="value: lastName" />
             </div>
         </div>
         <div class="form-actions no-color">
-            <button type="submit" class="btn" data-bind="click: register, disable: registering">Register</button>
+            <button type="submit" class="btn btn-primary" data-bind="click: register, disable: registering">Register</button>
         </div>
+        <br />
         <p><a href="#" data-bind="click: login">Log in</a> if you already have a local account.</p>
     </fieldset>
 </form>

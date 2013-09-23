@@ -12,26 +12,26 @@
         <ul class="text-error" data-bind="foreach: errors">
             <li data-bind="text: $data"></li>
         </ul>
-        <div class="control-group">
-            <label for="UserName" class="control-label">User name</label>
-            <div class="controls">
-                <input type="text" name="UserName" data-bind="value: userName, hasFocus: true" />
+        <div class="form-group">
+            <label for="UserName" class="col-lg-3 control-label">User name</label>
+            <div class="col-lg-4">
+                <input type="text" name="UserName" class="form-control" data-bind="value: userName, hasFocus: true" />
             </div>
         </div>
-        <div class="control-group">
-            <label for="FirstName" class="control-label">First name</label>
-            <div class="controls">
-                <input type="text" id="FirstName" name="FirstName" data-bind="value: firstName" />
+        <div class="form-group">
+            <label for="FirstName" class="col-lg-3 control-label">First name</label>
+            <div class="col-lg-4">
+                <input type="text" id="FirstName" name="FirstName" class="form-control" data-bind="value: firstName" />
             </div>
         </div>
-        <div class="control-group">
-            <label for="LastName" class="control-label">Last name</label>
-            <div class="controls">
-                <input type="text" id="LastName" name="LastName" data-bind="value: lastName" />
+        <div class="form-group">
+            <label for="LastName" class="col-lg-3 control-label">Last name</label>
+            <div class="col-lg-4">
+                <input type="text" id="LastName" name="LastName" class="form-control" data-bind="value: lastName" />
             </div>
         </div>
         <div class="form-actions no-color">
-            <button type="submit" class="btn" data-bind="click: register, disable: registering">Sign up</button>
+            <button type="submit" class="btn btn-primary" data-bind="click: register, disable: registering">Sign up</button>
         </div>
     </fieldset>
 </form>

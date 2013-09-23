@@ -7,32 +7,32 @@
 
     <fieldset class="form-horizontal">
         <legend>User Properties</legend>
-        <div class="control-group">
+        <div class="form-group">
             @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
             <div class="controls">
-                @Html.TextBoxFor(m => m.FirstName)
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
             </div>
         </div>
-        <div class="control-group">
+        <div class="form-group">
             @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
             <div class="controls">
-                @Html.TextBoxFor(m => m.LastName)
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
             </div>
         </div>
-        <div class="control-group">
+        <div class="form-group">
             @Html.LabelFor(Model => Model.Email, new { @class = "control-label" })
             <div class="controls">
-                @Html.TextBoxFor(Model => Model.Email)
+                @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control" })
             </div>
         </div>
-        <div class="control-group">
+        <div class="form-group">
             @Html.LabelFor(Model => Model.Phone, new { @class = "control-label" })
             <div class="controls">
-                @Html.TextBoxFor(Model => Model.Phone)
+                @Html.TextBoxFor(Model => Model.Phone, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-actions no-color">
-            <input type="submit" value="Update properties" class="btn" />
+            <input type="submit" value="Update properties" class="btn btn-default" />
         </div>
     </fieldset>
 }

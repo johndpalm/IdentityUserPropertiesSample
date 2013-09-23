@@ -40,8 +40,8 @@ namespace MySample.WebAPI
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                      "~/Content/bootstrap.css",
-                     "~/Content/Site.css",
-                     "~/Content/bootstrap-responsive.css"));
+                     "~/Content/bootstrap-theme.css",
+                     "~/Content/Site.css"));
         }
     }
 }
