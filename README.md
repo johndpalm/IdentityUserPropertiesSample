@@ -1,7 +1,7 @@
 IdentityUserPropertiesSample
 ============================
 
-##Live sample on Azure: http://identityuserpropertiessample.azurewebsites.net
+###Live sample on Azure: http://identityuserpropertiessample.azurewebsites.net
 
 The ASP.NET Identity User Properties Sample project is a collection of Visual Studio projects that show how to create a custom user, request user properties at registration, and edit properties after login.
 
