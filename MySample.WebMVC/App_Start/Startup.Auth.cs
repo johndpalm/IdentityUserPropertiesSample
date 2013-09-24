@@ -1,41 +1,51 @@
 ﻿using Owin;
 using System.Configuration;
-//using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace MySample.WebMVC
 {
     public partial class Startup
     {
-        // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
-            // Enable the application to use a cookie to store information for the signed in user
-            // and to use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseSignInCookies();
 
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            // Microsoft : Create application
+            // https://account.live.com/developers/applications
+            if (ConfigurationManager.AppSettings.Get("MicrosoftClientId").Length > 0)
+            {
+                app.UseMicrosoftAccountAuthentication(
+                    clientId: ConfigurationManager.AppSettings.Get("MicrosoftClientId"),
+                    clientSecret: ConfigurationManager.AppSettings.Get("MicrosoftClientSecret"));
+            }
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
+            // Twitter : Create a new application
+            // https://dev.twitter.com/apps
+            if (ConfigurationManager.AppSettings.Get("TwitterConsumerKey").Length > 0)
+            {
+                app.UseTwitterAuthentication(
+                   consumerKey: ConfigurationManager.AppSettings.Get("TwitterConsumerKey"),
+                   consumerSecret: ConfigurationManager.AppSettings.Get("TwitterConsumerSecret"));
+            }
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            // Facebook : Create New App
+            // https://dev.twitter.com/apps
+            if (ConfigurationManager.AppSettings.Get("FacebookAppId").Length > 0)
+            {
+                app.UseFacebookAuthentication(
+                   appId: ConfigurationManager.AppSettings.Get("FacebookAppId"),
+                   appSecret: ConfigurationManager.AppSettings.Get("FacebookAppSecret"));
+            }
 
-            //var foursquareClientId = (RoleEnvironment.IsAvailable) ? RoleEnvironment.GetConfigurationSettingValue("FoursquareClientId") :
-            var foursquareClientId = ConfigurationManager.AppSettings.Get("FoursquareClientId");
-           // var foursquareClientSecret = (RoleEnvironment.IsAvailable) ? RoleEnvironment.GetConfigurationSettingValue("FoursquareClientSecret") :
-            var foursquareClientSecret = ConfigurationManager.AppSettings.Get("FoursquareClientSecret");
+            // Foursquare : Create a new app
+            // https://foursquare.com/developers/apps
+            if (ConfigurationManager.AppSettings.Get("FoursquareClientId").Length > 0)
+            {
+                app.UseFoursquareAuthentication(
+                    clientId: ConfigurationManager.AppSettings.Get("FoursquareClientId"),
+                    clientSecret: ConfigurationManager.AppSettings.Get("FoursquareClientSecret"));
+            }
 
-
-            app.UseFoursquareAuthentication(
-                clientId : foursquareClientId,
-                clientSecret: foursquareClientSecret);
-
+            // Google : nothing to do here.
             app.UseGoogleAuthentication();
         }
     }
