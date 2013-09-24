@@ -1,4 +1,6 @@
 ﻿using Owin;
+using System.Configuration;
+using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace MySample.WebMVC
 {
@@ -23,6 +25,16 @@ namespace MySample.WebMVC
             //app.UseFacebookAuthentication(
             //   appId: "",
             //   appSecret: "");
+
+            var foursquareClientId = (RoleEnvironment.IsAvailable) ? RoleEnvironment.GetConfigurationSettingValue("FoursquareClientId") :
+                 ConfigurationManager.AppSettings.Get("FoursquareClientId");
+            var foursquareClientSecret = (RoleEnvironment.IsAvailable) ? RoleEnvironment.GetConfigurationSettingValue("FoursquareClientSecret") :
+                 ConfigurationManager.AppSettings.Get("FoursquareClientSecret");
+
+
+            app.UseFoursquareAuthentication(
+                clientId : foursquareClientId,
+                clientSecret: foursquareClientSecret);
 
             app.UseGoogleAuthentication();
         }

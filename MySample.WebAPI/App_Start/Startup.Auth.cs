@@ -65,7 +65,7 @@ namespace MySample.WebAPI
             //    appId: "",
             //    appSecret: "");
 
-            app.UseGoogleAuthentication();
+            //app.UseGoogleAuthentication();
         }
     }
 }
