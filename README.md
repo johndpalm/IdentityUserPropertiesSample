@@ -1,6 +1,8 @@
 IdentityUserPropertiesSample
 ============================
 
+#Live sample on Azure: http://identityuserpropertiessample.azurewebsites.net
+
 The ASP.NET Identity User Properties Sample project is a collection of Visual Studio projects that show how to create a custom user, request user properties at registration, and edit properties after login.
 
 The MySample.WebMVC project takes the Visual Studio (RC) MVC template, adds a CustomUser entity, and modified the AccountController and views to prompt for first name and last name at registration and then allow users to add email and phone number from the manage user page.
