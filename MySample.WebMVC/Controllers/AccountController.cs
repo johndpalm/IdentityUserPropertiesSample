@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -238,7 +239,7 @@ namespace MySample.WebMVC.Controllers
                 // Otherwise prompt to create a local user
                 ViewBag.ReturnUrl = returnUrl;
                 ViewBag.LoginProvider = loginProvider;
-                return View("ExternalLoginConfirmation", new RegisterExternalViewModel { UserName = id.Name });
+                return View("ExternalLoginConfirmation", new RegisterExternalViewModel { UserName = id.Name.Replace(" ", string.Empty) });
             }
         }
 
