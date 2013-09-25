@@ -13,17 +13,21 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Association Form</legend>
+    <fieldset class="form-horizontal">
         <p class="text-success">
             You've successfully authenticated with <strong>@ViewBag.LoginProvider</strong>.
+        </p>
+        <p>
             Please enter a user name for this site below and click the Register button to finish
             logging in.
         </p>
-        @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.UserName)
-        <br />
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            </div>
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
         <div class="form-group">
             @Html.LabelFor(m => m.FirstName, new { @class = "col-md-3 control-label" })
             <div class="col-md-4">

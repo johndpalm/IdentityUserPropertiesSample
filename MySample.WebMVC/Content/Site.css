@@ -41,3 +41,11 @@ input[type="checkbox"].input-validation-error {
         padding-bottom: 0px;
     }
 }
+
+@media all and (max-width:767px) {
+    .hide-text {
+        visibility: hidden;
+        position: absolute;
+        left: -9999px;
+    }
+}

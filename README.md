@@ -16,4 +16,6 @@ The projects are configured with identical connection strings so that you can re
 
 The projects have been updated to Bootstrap 3.0 which requires some changes to the MVC and SPA template CSS and DIV structures.  The Bootstrap site has a page on changes to make this migration: http://getbootstrap.com/getting-started/#migration
 
+The site has been themed using the Cosmo Bootstrap theme courtesy of Bootswatch. http://bootswatch.com
+
 
