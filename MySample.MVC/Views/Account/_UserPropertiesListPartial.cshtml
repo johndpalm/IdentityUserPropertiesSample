@@ -1,0 +1,38 @@
+﻿@model MySample.Models.UserPropertiesViewModel
+
+@using (Html.BeginForm("UserProperties", "Account"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset class="form-horizontal">
+        <legend>User Properties</legend>
+        <div class="form-group">
+            @Html.LabelFor(m => m.FirstName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                    </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(Model => Model.Email, new { @class = "col-md-3 control-label" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(Model => Model.Phone, new { @class = "col-md-3 control-label" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(Model => Model.Phone, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-actions no-color">
+            <input type="submit" value="Update properties" class="btn btn-default" />
+        </div>
+    </fieldset>
+}

@@ -10,7 +10,6 @@ namespace MySample.Data.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "MySample.Data.CustomDbContext";
         }
 
         protected override void Seed(MySample.Data.CustomDbContext context)

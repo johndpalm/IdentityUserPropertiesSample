@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - johndpalm/IdentityUserPropertiesSample</title>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <title>@ViewBag.Title - johndpalm/IdentityUserPropertiesSample</title>
     @Styles.Render("~/Content/bootstrap")
     @Styles.Render("~/Content/css")
     <script type="text/javascript">
@@ -34,8 +34,8 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                <li>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "navbar-link" })</li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "navbar-link" })</li>
             </ul>
             @Html.Partial("_LoginPartial")
         </div>

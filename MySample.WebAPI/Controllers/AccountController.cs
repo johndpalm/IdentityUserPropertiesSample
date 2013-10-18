@@ -286,8 +286,7 @@ namespace MySample.WebAPI.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [HttpPost("Register")]
-        //public async Task<IHttpActionResult> Register(RegisterBindingModel model)
-        public async Task<IHttpActionResult> Register(RegisterViewModel model)
+        public async Task<IHttpActionResult> Register(RegisterViewModel model)  // original RegisterBindingModel replaced with Models RegisterViewModel
         {
             if (!ModelState.IsValid)
             {
@@ -315,7 +314,7 @@ namespace MySample.WebAPI.Controllers
         [OverrideAuthentication]
         [HostAuthentication(Startup.ExternalOAuthAuthenticationType)]
         [HttpPost("RegisterExternal")]
-        public async Task<IHttpActionResult> RegisterExternal(RegisterExternalViewModel model)
+        public async Task<IHttpActionResult> RegisterExternal(RegisterExternalViewModel model) // RegisterExternalBindingModel replaced with RegisterExternalViewModel
         {
             if (!ModelState.IsValid)
             {
