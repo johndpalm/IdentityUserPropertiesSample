@@ -3,7 +3,10 @@ using MySample.Models;
 
 namespace MySample.Data
 {
-    public class CustomDbContext : IdentityDbContextWithCustomUser<CustomUser>
+    public class CustomDbContext : IdentityDbContext<CustomUser>
     {
+        public CustomDbContext()
+            : base("DefaultConnection")
+        { }
     }
 }

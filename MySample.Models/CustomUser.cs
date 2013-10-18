@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MySample.Models
 {
-    public class CustomUser : User
+    public class CustomUser : IdentityUser
     {
         public CustomUser() : base() { }
         public CustomUser(string username) : base(username) { }
