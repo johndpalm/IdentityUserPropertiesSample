@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MySample.Models
 {
@@ -22,6 +23,10 @@ namespace MySample.Models
         [Phone]
         [Display(Name = "Phone Number")]
         public string Phone { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        [Display(Name = "Joined")]
+        public DateTime JoinDate { get; set; }
     }
 
     public class RegisterViewModel

@@ -368,6 +368,7 @@ namespace MySample.MVC.Controllers
                         uservm.LastName = user.LastName;
                         uservm.Email = user.Email;
                         uservm.Phone = user.Phone;
+                        uservm.JoinDate = user.JoinDate;
                     }
                     catch (Exception ex)
                     {

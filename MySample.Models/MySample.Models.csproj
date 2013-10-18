@@ -59,8 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomUser.cs" />
+    <Compile Include="GuestsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels.cs" />
+    <Compile Include="AccountViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
