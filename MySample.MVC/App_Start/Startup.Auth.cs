@@ -2,6 +2,7 @@
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
+using System.Configuration;
 
 namespace MySample.MVC
 {
@@ -19,20 +20,47 @@ namespace MySample.MVC
             // Use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            // Microsoft : Create application
+            // https://account.live.com/developers/applications
+            if (ConfigurationManager.AppSettings.Get("MicrosoftClientId").Length > 0)
+            {
+                app.UseMicrosoftAccountAuthentication(
+                    clientId: ConfigurationManager.AppSettings.Get("MicrosoftClientId"),
+                    clientSecret: ConfigurationManager.AppSettings.Get("MicrosoftClientSecret"));
+            }
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            // Twitter : Create a new application
+            // https://dev.twitter.com/apps
+            if (ConfigurationManager.AppSettings.Get("TwitterConsumerKey").Length > 0)
+            {
+                app.UseTwitterAuthentication(
+                   consumerKey: ConfigurationManager.AppSettings.Get("TwitterConsumerKey"),
+                   consumerSecret: ConfigurationManager.AppSettings.Get("TwitterConsumerSecret"));
+            }
 
-            //app.UseGoogleAuthentication();
+
+            // Facebook : Create New App
+            // https://dev.twitter.com/apps
+            if (ConfigurationManager.AppSettings.Get("FacebookAppId").Length > 0)
+            {
+                app.UseFacebookAuthentication(
+                   appId: ConfigurationManager.AppSettings.Get("FacebookAppId"),
+                   appSecret: ConfigurationManager.AppSettings.Get("FacebookAppSecret"));
+            }
+
+
+            // Foursquare : Create a new app
+            // https://foursquare.com/developers/apps
+            if (ConfigurationManager.AppSettings.Get("FoursquareClientId").Length > 0)
+            {
+                app.UseFoursquareAuthentication(
+                    clientId: ConfigurationManager.AppSettings.Get("FoursquareClientId"),
+                    clientSecret: ConfigurationManager.AppSettings.Get("FoursquareClientSecret"));
+            }
+
+            // Google : nothing to do here.
+            app.UseGoogleAuthentication();
         }
     }
 }
