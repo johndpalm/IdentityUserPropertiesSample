@@ -363,6 +363,7 @@ namespace MySample.MVC.Controllers
                     {
                         UserStore<CustomUser> userstore = new UserStore<CustomUser>(db);
                         var user = await userstore.FindByIdAsync(User.Identity.GetUserId());
+
                         uservm.FirstName = user.FirstName;
                         uservm.LastName = user.LastName;
                         uservm.Email = user.Email;

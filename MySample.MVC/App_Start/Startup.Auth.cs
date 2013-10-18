@@ -45,9 +45,32 @@ namespace MySample.MVC
             // https://dev.twitter.com/apps
             if (ConfigurationManager.AppSettings.Get("FacebookAppId").Length > 0)
             {
-                app.UseFacebookAuthentication(
-                   appId: ConfigurationManager.AppSettings.Get("FacebookAppId"),
-                   appSecret: ConfigurationManager.AppSettings.Get("FacebookAppSecret"));
+                var facebookOptions = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationOptions()
+                {
+                    AppId = ConfigurationManager.AppSettings.Get("FacebookAppId"),
+                    AppSecret = ConfigurationManager.AppSettings.Get("FacebookAppSecret"),
+                    Provider = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationProvider()
+                    {
+                        OnAuthenticated = (context) =>
+                            {
+                                const string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
+                                foreach (var x in context.User)
+                                {
+                                    var claimType = string.Format("urn:facebook:{0}", x.Key);
+                                    string claimValue = x.Value.ToString();
+                                    if (!context.Identity.HasClaim(claimType, claimValue))
+                                        context.Identity.AddClaim(new System.Security.Claims.Claim(claimType, claimValue, XmlSchemaString, "Facebook"));
+
+                                }
+                                return Task.FromResult(0);
+                            }
+                    }
+
+                };
+
+                facebookOptions.Scope.Add("email");
+
+                app.UseFacebookAuthentication(facebookOptions);
             }
 
 
@@ -63,8 +86,7 @@ namespace MySample.MVC
                     {
                         OnAuthenticated = context =>
                         {
-                            string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
-                            var rawUserObjectFromFacebookAsJson = context.User;
+                            const string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
                             foreach (var x in context.User)
                             {
                                 var claimType = string.Format("urn:foursquare:{0}", x.Key);
