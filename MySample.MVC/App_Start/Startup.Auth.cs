@@ -3,6 +3,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace MySample.MVC
 {
@@ -54,9 +55,31 @@ namespace MySample.MVC
             // https://foursquare.com/developers/apps
             if (ConfigurationManager.AppSettings.Get("FoursquareClientId").Length > 0)
             {
-                app.UseFoursquareAuthentication(
-                    clientId: ConfigurationManager.AppSettings.Get("FoursquareClientId"),
-                    clientSecret: ConfigurationManager.AppSettings.Get("FoursquareClientSecret"));
+                var foursquareOptions = new Citrius.Owin.Security.Foursquare.FoursquareAuthenticationOptions()
+                {
+                    ClientId = ConfigurationManager.AppSettings.Get("FoursquareClientId"),
+                    ClientSecret = ConfigurationManager.AppSettings.Get("FoursquareClientSecret"),
+                    Provider = new Citrius.Owin.Security.Foursquare.FoursquareAuthenticationProvider()
+                    {
+                        OnAuthenticated = context =>
+                        {
+                            string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
+                            var rawUserObjectFromFacebookAsJson = context.User;
+                            foreach (var x in context.User)
+                            {
+                                var claimType = string.Format("urn:foursquare:{0}", x.Key);
+                                string claimValue = x.Value.ToString();
+                                if (!context.Identity.HasClaim(claimType, claimValue))
+                                    context.Identity.AddClaim(new System.Security.Claims.Claim(claimType, claimValue, XmlSchemaString, "Foursquare"));
+
+                            }
+
+                            return Task.FromResult(0);
+                        }
+                    }
+                };
+
+                app.UseFoursquareAuthentication(foursquareOptions);
             }
 
             // Google : nothing to do here.
