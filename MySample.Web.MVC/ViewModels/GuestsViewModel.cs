@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace MySample.Models
+namespace MySample.Web.MVC.ViewModels
 {
     public class GuestListViewModel
     {
@@ -19,8 +18,5 @@ namespace MySample.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         [Display(Name = "Joined")]
         public DateTime JoinDate { get; set; }
-
-        public ICollection<IdentityUserLogin> Logins { get; set; }
     }
-
 }

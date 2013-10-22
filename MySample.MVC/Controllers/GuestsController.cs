@@ -27,11 +27,12 @@ namespace MySample.MVC.Controllers
         {
             using (CustomDbContext db = new CustomDbContext())
             {
-                var guests = from users in db.Users
+                var guests = from users in db.Users orderby users.JoinDate
                     select new GuestListViewModel { 
                         FirstName = users.FirstName, 
                         LastName = users.LastName,
-                        JoinDate = users.JoinDate
+                        JoinDate = users.JoinDate,
+                        Logins = users.Logins
                     };
 
                 return guests.ToList<GuestListViewModel>();

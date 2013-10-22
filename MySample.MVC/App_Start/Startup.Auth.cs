@@ -25,21 +25,43 @@ namespace MySample.MVC
             // https://account.live.com/developers/applications
             if (ConfigurationManager.AppSettings.Get("MicrosoftClientId").Length > 0)
             {
-                app.UseMicrosoftAccountAuthentication(
-                    clientId: ConfigurationManager.AppSettings.Get("MicrosoftClientId"),
-                    clientSecret: ConfigurationManager.AppSettings.Get("MicrosoftClientSecret"));
-            }
+                var msaccountOptions = new Microsoft.Owin.Security.MicrosoftAccount.MicrosoftAccountAuthenticationOptions() 
+                {
+                    ClientId = ConfigurationManager.AppSettings.Get("MicrosoftClientId"),
+                    ClientSecret = ConfigurationManager.AppSettings.Get("MicrosoftClientSecret"),
+                    Provider = new Microsoft.Owin.Security.MicrosoftAccount.MicrosoftAccountAuthenticationProvider()
+                    {
+                        OnAuthenticated = (context) =>
+                            {
+                                context.Identity.AddClaim(new System.Security.Claims.Claim("urn:microsoftaccount:access_token", context.AccessToken, XmlSchemaString, "Microsoft"));
+                                return Task.FromResult(0);
+                            }
+                    }                   
+                };
 
+                app.UseMicrosoftAccountAuthentication(msaccountOptions);
+            }
 
             // Twitter : Create a new application
             // https://dev.twitter.com/apps
             if (ConfigurationManager.AppSettings.Get("TwitterConsumerKey").Length > 0)
             {
-                app.UseTwitterAuthentication(
-                   consumerKey: ConfigurationManager.AppSettings.Get("TwitterConsumerKey"),
-                   consumerSecret: ConfigurationManager.AppSettings.Get("TwitterConsumerSecret"));
-            }
+                var twitterOptions = new Microsoft.Owin.Security.Twitter.TwitterAuthenticationOptions()
+                {
+                    ConsumerKey = ConfigurationManager.AppSettings.Get("TwitterConsumerKey"),
+                    ConsumerSecret = ConfigurationManager.AppSettings.Get("TwitterConsumerSecret"),
+                    Provider = new Microsoft.Owin.Security.Twitter.TwitterAuthenticationProvider()
+                    {
+                        OnAuthenticated = (context) =>
+                            {
+                                context.Identity.AddClaim(new System.Security.Claims.Claim("urn:twitter:access_token", context.AccessToken, XmlSchemaString, "Twitter"));
+                                return Task.FromResult(0);
+                            }
+                    }
+                };
 
+                app.UseTwitterAuthentication(twitterOptions);
+            }
 
             // Facebook : Create New App
             // https://dev.twitter.com/apps
@@ -53,7 +75,7 @@ namespace MySample.MVC
                     {
                         OnAuthenticated = (context) =>
                             {
-                                const string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
+                                context.Identity.AddClaim(new System.Security.Claims.Claim("urn:facebook:access_token", context.AccessToken, XmlSchemaString, "Facebook"));
                                 foreach (var x in context.User)
                                 {
                                     var claimType = string.Format("urn:facebook:{0}", x.Key);
@@ -67,13 +89,9 @@ namespace MySample.MVC
                     }
 
                 };
-
-                facebookOptions.Scope.Add("email");
-
                 app.UseFacebookAuthentication(facebookOptions);
             }
-
-
+            
             // Foursquare : Create a new app
             // https://foursquare.com/developers/apps
             if (ConfigurationManager.AppSettings.Get("FoursquareClientId").Length > 0)
@@ -86,15 +104,14 @@ namespace MySample.MVC
                     {
                         OnAuthenticated = context =>
                         {
-                            const string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
-                            foreach (var x in context.User)
-                            {
-                                var claimType = string.Format("urn:foursquare:{0}", x.Key);
-                                string claimValue = x.Value.ToString();
-                                if (!context.Identity.HasClaim(claimType, claimValue))
-                                    context.Identity.AddClaim(new System.Security.Claims.Claim(claimType, claimValue, XmlSchemaString, "Foursquare"));
-
-                            }
+                            context.Identity.AddClaim(new System.Security.Claims.Claim("urn:foursquare:access_token", context.AccessToken, XmlSchemaString, "Foursquare"));
+                            //foreach (var x in context.User)
+                            //{
+                            //    var claimType = string.Format("urn:foursquare:{0}", x.Key);
+                            //    string claimValue = x.Value.ToString();
+                            //    if (!context.Identity.HasClaim(claimType, claimValue))
+                            //        context.Identity.AddClaim(new System.Security.Claims.Claim(claimType, claimValue, XmlSchemaString, "Foursquare"));
+                            //}
 
                             return Task.FromResult(0);
                         }
@@ -102,10 +119,20 @@ namespace MySample.MVC
                 };
 
                 app.UseFoursquareAuthentication(foursquareOptions);
+
+                //app.UseFoursquareAuthentication(
+                //    clientId: ConfigurationManager.AppSettings.Get("FoursquareClientId"),
+                //    clientSecret: ConfigurationManager.AppSettings.Get("FoursquareClientSecret"));
+
+
             }
 
             // Google : nothing to do here.
             app.UseGoogleAuthentication();
         }
+
+        const string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
+        const string ignoreClaimPrefix = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims";
+
     }
 }

@@ -8,12 +8,10 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
-using MySample.Data;
 using MySample.Models;
-using System.Threading;
-using System.Diagnostics;
+using MySample.Data;
 
-namespace MySample.MVC.Controllers
+namespace MySample.Web.MVC.Controllers
 {
     [Authorize]
     public class AccountController : Controller
@@ -81,11 +79,7 @@ namespace MySample.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new CustomUser() { 
-                    UserName = model.UserName,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName
-                };
+                var user = new CustomUser() { UserName = model.UserName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -307,9 +301,7 @@ namespace MySample.MVC.Controllers
         {
             return View();
         }
-        
-        //
-        // JDP:  This method was removed in the RTM template.  After adding identity customizations, the anonymous type using in the RTM template throw runtime errors.
+
         [AllowAnonymous]
         [ChildActionOnly]
         public ActionResult ExternalLoginsList(string returnUrl)
@@ -317,6 +309,7 @@ namespace MySample.MVC.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return (ActionResult)PartialView("_ExternalLoginsListPartial", new List<AuthenticationDescription>(AuthenticationManager.GetExternalAuthenticationTypes()));
         }
+
 
         [ChildActionOnly]
         public ActionResult RemoveAccountList()
@@ -326,73 +319,17 @@ namespace MySample.MVC.Controllers
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
-        //
-        // POST: //Account/UserProperties
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UserProperties(UserPropertiesViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    using (CustomDbContext db = new CustomDbContext())
-                    {
-                        UserStore<CustomUser> userstore = new UserStore<CustomUser>(db);
-                        var user = await userstore.FindByIdAsync(User.Identity.GetUserId());
-                        user.FirstName = model.FirstName;
-                        user.LastName = model.LastName;
-                        user.Email = model.Email;
-                        user.Phone = model.Phone;
-                        await userstore.UpdateAsync(user);
-                        await db.SaveChangesAsync();
-                        return RedirectToAction("Manage", new { Message = "Your properties have been updated." });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Trace.TraceError("Error occurred while updating user properties : {0}", ex.ToString());
-                }
-            }
-
-            return View(model);
-
-        }
-
-        [ChildActionOnly]
-        public ActionResult UserPropertiesList()
-        {
-            return Task.Run(async () =>
-            {
-                UserPropertiesViewModel uservm = new UserPropertiesViewModel();
-                using (CustomDbContext db = new CustomDbContext())
-                {
-                    try
-                    {
-                        UserStore<CustomUser> userstore = new UserStore<CustomUser>(db);
-                        var user = await userstore.FindByIdAsync(User.Identity.GetUserId());
-
-                        uservm.FirstName = user.FirstName;
-                        uservm.LastName = user.LastName;
-                        uservm.Email = user.Email;
-                        uservm.Phone = user.Phone;
-                        uservm.JoinDate = user.JoinDate;
-                    }
-                    catch (Exception ex)
-                    {
-                        Trace.TraceError("Error occurred while getting user properties: {0}", ex.ToString());
-                    }
-
-                }
-                return (ActionResult)PartialView("_UserPropertiesListPartial", uservm);
-            }).Result;
-        }
-
         [ChildActionOnly]
         public ActionResult ExternalUserPropertiesList()
         {
-            var extList = GetExternalProperties();
-            return (ActionResult)PartialView("_ExternalUserPropertiesListPartial", extList);
+            var claimlist = from claims in AuthenticationManager.User.Claims
+                            select new ExtPropertyViewModel
+                            {
+                                Issuer = claims.Issuer,
+                                Type = claims.Type,
+                                Value = claims.Value
+                            };
+            return (ActionResult)PartialView("_ExternalUserPropertiesListPartial", claimlist.ToList<ExtPropertyViewModel>());
         }
 
         protected override void Dispose(bool disposing)
@@ -422,7 +359,19 @@ namespace MySample.MVC.Controllers
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
 
-            await SetExternalProperties(identity);
+            // get external claims captured in Startup.ConfigureAuth
+            ClaimsIdentity ext = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+
+            if (ext != null) { 
+                var ignoreClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims";
+                // add external claims to identity
+                foreach (var c in ext.Claims)
+                {
+                    if (!c.Type.StartsWith(ignoreClaim))
+                        if (!identity.HasClaim(c.Type, c.Value))
+                            identity.AddClaim(c);
+                }
+            }
 
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
@@ -492,39 +441,6 @@ namespace MySample.MVC.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-
-        private async Task SetExternalProperties(ClaimsIdentity identity)
-        {
-            // get external claims captured in Startup.ConfigureAuth
-            ClaimsIdentity ext = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
-
-            if (ext != null)
-            {
-                var ignoreClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims";
-                // add external claims to identity
-                foreach (var c in ext.Claims)
-                {
-                    if (!c.Type.StartsWith(ignoreClaim))
-                        if (!identity.HasClaim(c.Type, c.Value))
-                            identity.AddClaim(c);
-                } 
-            }
-        }
-
-        private List<ExtPropertyViewModel> GetExternalProperties()
-        {
-            var claimlist = from claims in AuthenticationManager.User.Claims
-                            where claims.Issuer != "LOCAL AUTHORITY"
-                            select new ExtPropertyViewModel
-                            {
-                                Issuer = claims.Issuer,
-                                Type = claims.Type,
-                                Value = claims.Value
-                            };
-
-            return claimlist.ToList<ExtPropertyViewModel>();
-        }
-
         #endregion
     }
 }

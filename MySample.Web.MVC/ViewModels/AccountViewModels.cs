@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace MySample.Models
+namespace MySample.Web.MVC.ViewModels
 {
     public class UserPropertiesViewModel
     {

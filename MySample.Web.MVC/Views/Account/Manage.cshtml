@@ -1,4 +1,4 @@
-﻿@using MySample.Models;
+﻿@using MySample.Web.MVC.Models;
 @using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Manage Account";
@@ -8,7 +8,7 @@
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         @if (ViewBag.HasLocalPassword)
         {
             @Html.Partial("_ChangePasswordPartial")
@@ -21,14 +21,6 @@
         <section id="externalLogins">
             @Html.Action("RemoveAccountList")
             @Html.Partial("_ExternalLoginsListPartial", new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
-        </section>
-    </div>
-    <div class="col-md-6">
-        <p>&nbsp;</p>
-        @Html.Action("UserPropertiesList")
-        <section id="externalProperties">
-            <br />
-            @Html.Action("ExternalUserPropertiesList")
         </section>
     </div>
 </div>
