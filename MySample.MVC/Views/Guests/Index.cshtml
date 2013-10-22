@@ -1,0 +1,34 @@
+﻿@model IEnumerable<MySample.Models.GuestListViewModel>
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            Connected Accounts
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JoinDate)
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @foreach (var login in item.Logins)
+                {
+                    <img src="@("../Content/" + login.LoginProvider +".png")" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JoinDate)
+            </td>
+        </tr>
+    }
+</table>

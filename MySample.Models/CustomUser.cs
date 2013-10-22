@@ -1,12 +1,21 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MySample.Models
 {
     public class CustomUser : IdentityUser
     {
-        public CustomUser() : base() { }
-        public CustomUser(string username) : base(username) { }
+        public CustomUser() : base() 
+        {
+            JoinDate = DateTime.Now;
+        }
+        public CustomUser(string username) : base(username) 
+        {
+            JoinDate = DateTime.Now;
+        }
+
+        public DateTime JoinDate { get; private set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }

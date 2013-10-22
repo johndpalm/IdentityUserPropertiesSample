@@ -63,6 +63,10 @@
     <Compile Include="Migrations\201310180615426_first.Designer.cs">
       <DependentUpon>201310180615426_first.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201310181913011_JoinDate.cs" />
+    <Compile Include="Migrations\201310181913011_JoinDate.Designer.cs">
+      <DependentUpon>201310181913011_JoinDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -81,6 +85,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201310180615426_first.resx">
       <DependentUpon>201310180615426_first.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201310181913011_JoinDate.resx">
+      <DependentUpon>201310181913011_JoinDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

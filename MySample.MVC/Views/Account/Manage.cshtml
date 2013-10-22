@@ -26,6 +26,10 @@
     <div class="col-md-6">
         <p>&nbsp;</p>
         @Html.Action("UserPropertiesList")
+        <section id="externalProperties">
+            <br />
+            @Html.Action("ExternalUserPropertiesList")
+        </section>
     </div>
 </div>
 @section Scripts {

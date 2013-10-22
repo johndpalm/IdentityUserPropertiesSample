@@ -309,6 +309,24 @@ namespace MySample.MVC.Controllers
         }
         
         //
+        // JDP:  This method was removed in the RTM template.  After adding identity customizations, the anonymous type using in the RTM template throw runtime errors.
+        [AllowAnonymous]
+        [ChildActionOnly]
+        public ActionResult ExternalLoginsList(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return (ActionResult)PartialView("_ExternalLoginsListPartial", new List<AuthenticationDescription>(AuthenticationManager.GetExternalAuthenticationTypes()));
+        }
+
+        [ChildActionOnly]
+        public ActionResult RemoveAccountList()
+        {
+            var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
+            ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
+            return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
+        }
+
+        //
         // POST: //Account/UserProperties
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -341,16 +359,6 @@ namespace MySample.MVC.Controllers
 
         }
 
-
-
-        [ChildActionOnly]
-        public ActionResult RemoveAccountList()
-        {
-            var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
-            ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
-            return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
-        }
-
         [ChildActionOnly]
         public ActionResult UserPropertiesList()
         {
@@ -363,10 +371,12 @@ namespace MySample.MVC.Controllers
                     {
                         UserStore<CustomUser> userstore = new UserStore<CustomUser>(db);
                         var user = await userstore.FindByIdAsync(User.Identity.GetUserId());
+
                         uservm.FirstName = user.FirstName;
                         uservm.LastName = user.LastName;
                         uservm.Email = user.Email;
                         uservm.Phone = user.Phone;
+                        uservm.JoinDate = user.JoinDate;
                     }
                     catch (Exception ex)
                     {
@@ -376,6 +386,13 @@ namespace MySample.MVC.Controllers
                 }
                 return (ActionResult)PartialView("_UserPropertiesListPartial", uservm);
             }).Result;
+        }
+
+        [ChildActionOnly]
+        public ActionResult ExternalUserPropertiesList()
+        {
+            var extList = GetExternalProperties();
+            return (ActionResult)PartialView("_ExternalUserPropertiesListPartial", extList);
         }
 
         protected override void Dispose(bool disposing)
@@ -404,6 +421,9 @@ namespace MySample.MVC.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+            await SetExternalProperties(identity);
+
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
         }
 
@@ -472,6 +492,39 @@ namespace MySample.MVC.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
+        private async Task SetExternalProperties(ClaimsIdentity identity)
+        {
+            // get external claims captured in Startup.ConfigureAuth
+            ClaimsIdentity ext = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+
+            if (ext != null)
+            {
+                var ignoreClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims";
+                // add external claims to identity
+                foreach (var c in ext.Claims)
+                {
+                    if (!c.Type.StartsWith(ignoreClaim))
+                        if (!identity.HasClaim(c.Type, c.Value))
+                            identity.AddClaim(c);
+                } 
+            }
+        }
+
+        private List<ExtPropertyViewModel> GetExternalProperties()
+        {
+            var claimlist = from claims in AuthenticationManager.User.Claims
+                            where claims.Issuer != "LOCAL AUTHORITY"
+                            select new ExtPropertyViewModel
+                            {
+                                Issuer = claims.Issuer,
+                                Type = claims.Type,
+                                Value = claims.Value
+                            };
+
+            return claimlist.ToList<ExtPropertyViewModel>();
+        }
+
         #endregion
     }
 }
