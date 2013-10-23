@@ -183,6 +183,7 @@
     <Content Include="Content\facebook.png" />
     <Content Include="Content\foursquare.png" />
     <Content Include="Content\google.png" />
+    <Content Include="Content\IdentitySampleScreenshot.png" />
     <Content Include="Content\microsoft.png" />
     <Content Include="Content\twitter.png" />
     <Content Include="Errors\FileNotFound.html" />
@@ -240,7 +241,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

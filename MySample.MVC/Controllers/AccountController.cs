@@ -1,17 +1,16 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
+using MySample.Data;
+using MySample.Models;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin.Security;
-using MySample.Data;
-using MySample.Models;
-using System.Threading;
-using System.Diagnostics;
 
 namespace MySample.MVC.Controllers
 {
@@ -389,12 +388,12 @@ namespace MySample.MVC.Controllers
             }).Result;
         }
 
-        [ChildActionOnly]
-        public ActionResult ExternalUserPropertiesList()
-        {
-            var extList = GetExternalProperties();
-            return (ActionResult)PartialView("_ExternalUserPropertiesListPartial", extList);
-        }
+[ChildActionOnly]
+public ActionResult ExternalUserPropertiesList()
+{
+    var extList = GetExternalProperties();
+    return (ActionResult)PartialView("_ExternalUserPropertiesListPartial", extList);
+}
 
         protected override void Dispose(bool disposing)
         {
@@ -513,19 +512,19 @@ namespace MySample.MVC.Controllers
             }
         }
 
-        private List<ExtPropertyViewModel> GetExternalProperties()
-        {
-            var claimlist = from claims in AuthenticationManager.User.Claims
-                            where claims.Issuer != "LOCAL AUTHORITY"
-                            select new ExtPropertyViewModel
-                            {
-                                Issuer = claims.Issuer,
-                                Type = claims.Type,
-                                Value = claims.Value
-                            };
+private List<ExtPropertyViewModel> GetExternalProperties()
+{
+    var claimlist = from claims in AuthenticationManager.User.Claims
+                    where claims.Issuer != "LOCAL AUTHORITY"
+                    select new ExtPropertyViewModel
+                    {
+                        Issuer = claims.Issuer,
+                        Type = claims.Type,
+                        Value = claims.Value
+                    };
 
-            return claimlist.ToList<ExtPropertyViewModel>();
-        }
+    return claimlist.ToList<ExtPropertyViewModel>();
+}
 
         #endregion
     }
