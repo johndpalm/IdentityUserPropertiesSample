@@ -34,6 +34,16 @@ namespace MySample.MVC
                         OnAuthenticated = (context) =>
                             {
                                 context.Identity.AddClaim(new System.Security.Claims.Claim("urn:microsoftaccount:access_token", context.AccessToken, XmlSchemaString, "Microsoft"));
+
+                                // The code below isn't working.  Issue here: https://katanaproject.codeplex.com/workitem/145
+                                //foreach (var x in context.User)
+                                //{
+                                //    var claimType = string.Format("urn:microsoftaccount:{0}", x.Key);
+                                //    string claimValue = x.Value.ToString();
+                                //    if (!context.Identity.HasClaim(claimType, claimValue))
+                                //        context.Identity.AddClaim(new System.Security.Claims.Claim(claimType, claimValue, XmlSchemaString, "Microsoft"));
+                                //}
+
                                 return Task.FromResult(0);
                             }
                     }
@@ -89,6 +99,7 @@ namespace MySample.MVC
                     }
 
                 };
+                facebookOptions.Scope.Add("email");
                 app.UseFacebookAuthentication(facebookOptions);
             }
 
@@ -105,6 +116,8 @@ namespace MySample.MVC
                         OnAuthenticated = context =>
                         {
                             context.Identity.AddClaim(new System.Security.Claims.Claim("urn:foursquare:access_token", context.AccessToken, XmlSchemaString, "Foursquare"));
+
+                            // Same issue as MicrosoftAccount auth provider (same core codeset) https://katanaproject.codeplex.com/workitem/145
                             //foreach (var x in context.User)
                             //{
                             //    var claimType = string.Format("urn:foursquare:{0}", x.Key);
@@ -119,11 +132,6 @@ namespace MySample.MVC
                 };
 
                 app.UseFoursquareAuthentication(foursquareOptions);
-
-                //app.UseFoursquareAuthentication(
-                //    clientId: ConfigurationManager.AppSettings.Get("FoursquareClientId"),
-                //    clientSecret: ConfigurationManager.AppSettings.Get("FoursquareClientSecret"));
-
 
             }
 
