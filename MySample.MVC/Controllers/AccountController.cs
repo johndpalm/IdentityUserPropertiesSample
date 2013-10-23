@@ -309,7 +309,7 @@ namespace MySample.MVC.Controllers
         }
 
         //
-        // JDP:  This method was removed in the RTM template.  After adding identity customizations, the anonymous type using in the RTM template throw runtime errors.
+        // JDP:  This method was removed in the RTM template.  After adding identity customizations, the anonymous type using in the RTM template throws runtime errors.
         [AllowAnonymous]
         [ChildActionOnly]
         public ActionResult ExternalLoginsList(string returnUrl)
@@ -336,18 +336,14 @@ namespace MySample.MVC.Controllers
             {
                 try
                 {
-                    using (CustomDbContext db = new CustomDbContext())
-                    {
-                        UserStore<CustomUser> userstore = new UserStore<CustomUser>(db);
-                        var user = await userstore.FindByIdAsync(User.Identity.GetUserId());
-                        user.FirstName = model.FirstName;
-                        user.LastName = model.LastName;
-                        user.Email = model.Email;
-                        user.Phone = model.Phone;
-                        await userstore.UpdateAsync(user);
-                        await db.SaveChangesAsync();
-                        return RedirectToAction("Manage", new { Message = "Your properties have been updated." });
-                    }
+                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.Email = model.Email;
+                    user.Phone = model.Phone;
+                    await UserManager.UpdateAsync(user);
+                    return RedirectToAction("Manage", new { Message = "Your properties have been updated." });
+
                 }
                 catch (Exception ex)
                 {
@@ -365,35 +361,32 @@ namespace MySample.MVC.Controllers
             return Task.Run(async () =>
             {
                 UserPropertiesViewModel uservm = new UserPropertiesViewModel();
-                using (CustomDbContext db = new CustomDbContext())
+
+                try
                 {
-                    try
-                    {
-                        UserStore<CustomUser> userstore = new UserStore<CustomUser>(db);
-                        var user = await userstore.FindByIdAsync(User.Identity.GetUserId());
+                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-                        uservm.FirstName = user.FirstName;
-                        uservm.LastName = user.LastName;
-                        uservm.Email = user.Email;
-                        uservm.Phone = user.Phone;
-                        uservm.JoinDate = user.JoinDate;
-                    }
-                    catch (Exception ex)
-                    {
-                        Trace.TraceError("Error occurred while getting user properties: {0}", ex.ToString());
-                    }
-
+                    uservm.FirstName = user.FirstName;
+                    uservm.LastName = user.LastName;
+                    uservm.Email = user.Email;
+                    uservm.Phone = user.Phone;
+                    uservm.JoinDate = user.JoinDate;
                 }
+                catch (Exception ex)
+                {
+                    Trace.TraceError("Error occurred while getting user properties: {0}", ex.ToString());
+                }
+
                 return (ActionResult)PartialView("_UserPropertiesListPartial", uservm);
             }).Result;
         }
 
-[ChildActionOnly]
-public ActionResult ExternalUserPropertiesList()
-{
-    var extList = GetExternalProperties();
-    return (ActionResult)PartialView("_ExternalUserPropertiesListPartial", extList);
-}
+        [ChildActionOnly]
+        public ActionResult ExternalUserPropertiesList()
+        {
+            var extList = GetExternalProperties();
+            return (ActionResult)PartialView("_ExternalUserPropertiesListPartial", extList);
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -425,6 +418,9 @@ public ActionResult ExternalUserPropertiesList()
             await SetExternalProperties(identity);
 
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+
+            await SaveAccessToken(user, identity);
+
         }
 
         private void AddErrors(IdentityResult result)
@@ -501,6 +497,7 @@ public ActionResult ExternalUserPropertiesList()
 
             if (ext != null)
             {
+
                 var ignoreClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims";
                 // add external claims to identity
                 foreach (var c in ext.Claims)
@@ -512,19 +509,37 @@ public ActionResult ExternalUserPropertiesList()
             }
         }
 
-private List<ExtPropertyViewModel> GetExternalProperties()
-{
-    var claimlist = from claims in AuthenticationManager.User.Claims
-                    where claims.Issuer != "LOCAL AUTHORITY"
-                    select new ExtPropertyViewModel
-                    {
-                        Issuer = claims.Issuer,
-                        Type = claims.Type,
-                        Value = claims.Value
-                    };
+        private async Task SaveAccessToken(CustomUser user, ClaimsIdentity identity)
+        {
+            var userclaims = await UserManager.GetClaimsAsync(user.Id);
 
-    return claimlist.ToList<ExtPropertyViewModel>();
-}
+            foreach ( var at in (
+                from claims in identity.Claims
+                where claims.Type.EndsWith("access_token")
+                select new Claim(claims.Type, claims.Value, claims.ValueType, claims.Issuer)))
+                {
+
+                    if (!userclaims.Contains(at))
+                    {
+                        await UserManager.AddClaimAsync(user.Id, at);
+                    }
+
+                };
+        }
+
+        private List<ExtPropertyViewModel> GetExternalProperties()
+        {
+            var claimlist = from claims in AuthenticationManager.User.Claims
+                            where claims.Issuer != "LOCAL AUTHORITY"
+                            select new ExtPropertyViewModel
+                            {
+                                Issuer = claims.Issuer,
+                                Type = claims.Type,
+                                Value = claims.Value
+                            };
+
+            return claimlist.ToList<ExtPropertyViewModel>();
+        }
 
         #endregion
     }
