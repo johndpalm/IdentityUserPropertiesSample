@@ -4,28 +4,35 @@
 
 <div class="jumbotron">
     <h1>ASP.NET Identity (MVC)</h1>
-    <p class="lead">The ASP.NET Identity User Properties Sample project is a collection of Visual Studio projects that show how to create a custom user, request user properties at registration, and edit properties after login.</p>
-    <p class="lead">The MySample.WebMVC project takes the Visual Studio (RC) MVC template, adds a CustomUser entity, and modified the AccountController and views to prompt for additional user properties.</p>
+    <p class="lead">This project is based on the MVC 5 (RTM) template, then extended to show how to capture and store user properties by extending the default User entity, interacting with the external and application cookies, as well as working with the Entity Framework databases used by ASP.NET Identity.</p>
     <p><a href="https://github.com/johndpalm/IdentityUserPropertiesSample" target="_blank" class="btn btn-primary btn-large">GitHub project &raquo;</a></p>
 </div>
 <div class="row">
     <div class="col-md-4">
-        <h2>ASP.NET MVC</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-primary btn-sm" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a>&nbsp;<a class="btn btn-default btn-sm" href="http://blogs.citrius.com/tag/mvc/">My MVC Articles</a></p>
+        <h2>Features</h2>
+        <ul>
+            <li>Customer User entity.</li>
+            <li>Prompt for additional user details at registration.</li>
+            <li>Allow users to update additional details on account manage page.</li>
+            <li>Requests and captures external login provider user properties.</li>
+            <li>View external login provider user properties on account manage page.</li>
+            <li>All site specific values are appSettings in web.config. (App settings are set in the Azure website config.)</li>
+        </ul>
+
+ </div>
+    <div class="col-md-4">
+        <h2>Other polish</h2>
+        <ul>
+            <li>Custom error pages on Release.</li>
+            <li>Modified Bootstrap theme using <a href="https://github.com/thomaspark/bootswatch">Bootswatch</a>.</li>
+            <li>Guest list showing registered users, join date, and connected logins.</li>
+            <li>Google Analytics</li>
+        </ul>
+
     </div>
     <div class="col-md-4">
-        <h2>Bootstrap 3.0</h2>
-        <p>The ASP.NET templates that ship with Visual Studio 2013 Preview/RC use Bootstrap 2.x.  You can easily update your projects to version 3 by finding and replacing some CSS classes and modifying some of the DIV structures.</p>
-        <p><a class="btn btn-primary btn-sm" href="http://getbootstrap.com/getting-started/#migration">Learn more &raquo;</a>&nbsp;<a class="btn btn-default btn-sm" href="http://blogs.citrius.com/tag/bootstrap/">My Bootstrap Articles</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Bootswatch</h2>
-        <p>Apply free or paid themes to your MVC site by just updating the Bootstrap CSS file.  Or, modify the LESS templates to create your own custom theme.</p>
-        <p><a class="btn btn-primary btn-sm" href="http://bootswatch.com/">Learn more &raquo;</a></p>
+        <h2>Live sample</h2>
+        <p>You can see visit a live version of this project hosted on Windows Azure. It is most likely running code from the 'dev' branch which might have some bugs.</p>
+        <p>I try to make sure any changes are tested and working correctly before I update 'master'.</p>
     </div>
 </div>
