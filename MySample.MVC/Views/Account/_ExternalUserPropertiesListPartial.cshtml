@@ -1,0 +1,18 @@
+﻿@model IEnumerable<MySample.Models.ExtPropertyViewModel>
+
+@if (Model != null)
+{
+    <legend>External User Properties</legend>
+    <table class="table">
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>@claim.Issuer</td>
+                    <td>@claim.Type</td>
+                    <td>@claim.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
