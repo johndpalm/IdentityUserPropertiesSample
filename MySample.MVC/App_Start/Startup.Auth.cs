@@ -25,7 +25,7 @@ namespace MySample.MVC
             // https://account.live.com/developers/applications
             if (ConfigurationManager.AppSettings.Get("MicrosoftClientId").Length > 0)
             {
-                var msaccountOptions = new Microsoft.Owin.Security.MicrosoftAccount.MicrosoftAccountAuthenticationOptions() 
+                var msaccountOptions = new Microsoft.Owin.Security.MicrosoftAccount.MicrosoftAccountAuthenticationOptions()
                 {
                     ClientId = ConfigurationManager.AppSettings.Get("MicrosoftClientId"),
                     ClientSecret = ConfigurationManager.AppSettings.Get("MicrosoftClientSecret"),
@@ -36,7 +36,7 @@ namespace MySample.MVC
                                 context.Identity.AddClaim(new System.Security.Claims.Claim("urn:microsoftaccount:access_token", context.AccessToken, XmlSchemaString, "Microsoft"));
                                 return Task.FromResult(0);
                             }
-                    }                   
+                    }
                 };
 
                 app.UseMicrosoftAccountAuthentication(msaccountOptions);
@@ -91,7 +91,7 @@ namespace MySample.MVC
                 };
                 app.UseFacebookAuthentication(facebookOptions);
             }
-            
+
             // Foursquare : Create a new app
             // https://foursquare.com/developers/apps
             if (ConfigurationManager.AppSettings.Get("FoursquareClientId").Length > 0)

@@ -81,7 +81,8 @@ namespace MySample.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new CustomUser() { 
+                var user = new CustomUser()
+                {
                     UserName = model.UserName,
                     FirstName = model.FirstName,
                     LastName = model.LastName
@@ -307,7 +308,7 @@ namespace MySample.MVC.Controllers
         {
             return View();
         }
-        
+
         //
         // JDP:  This method was removed in the RTM template.  After adding identity customizations, the anonymous type using in the RTM template throw runtime errors.
         [AllowAnonymous]
@@ -467,7 +468,8 @@ namespace MySample.MVC.Controllers
 
         private class ChallengeResult : HttpUnauthorizedResult
         {
-            public ChallengeResult(string provider, string redirectUri) : this(provider, redirectUri, null)
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
             {
             }
 
@@ -507,7 +509,7 @@ namespace MySample.MVC.Controllers
                     if (!c.Type.StartsWith(ignoreClaim))
                         if (!identity.HasClaim(c.Type, c.Value))
                             identity.AddClaim(c);
-                } 
+                }
             }
         }
 
